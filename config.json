@@ -1,0 +1,13 @@
+{
+  "user": {
+    "password": "",
+    "whitelist": [
+    ],
+    "groupMembers": [
+    ]
+  },
+  "redis": {
+    "host": "10.0.0.118",
+    "port": 6380
+  }
+}
