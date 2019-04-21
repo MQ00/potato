@@ -6,7 +6,7 @@ npm-debug.log*
 #Webstorm shit
 .idea
 
-config.json
+config.json*
 
 #package lock, cuz fuck package lock
 package-lock.json*
