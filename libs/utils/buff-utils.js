@@ -88,7 +88,16 @@ async function doGroupClarity() {
   redisUtils.publishKey('0', 1000, 'ENCHANTER');
 }
 
+// CMON KUUUUNARK!
+async function doGroupBuffs() {
+  redisUtils.log('Doing Group Buffs');
+  await redisUtils.publishKeySequence('/memspellset groupbuffs', 'ENCHANTER');
+  await redisUtils.publishKeySequence('/memspellset groupbuffs', 'CLERIC');
+
+}
+
 module.exports = {
   doGroupClarity: doGroupClarity,
-  buffTarget: buffTarget
+  buffTarget: buffTarget,
+  doGroupBuffs: doGroupBuffs
 };

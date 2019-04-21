@@ -12,11 +12,14 @@ function publishKey(key, delay, channel) {
   publish(chan, JSON.stringify({key: key, random: random}));
 }
 
-async function publishKeySequence(str) {
+async function publishKeySequence(str, channel, returnTermination) {
   for (let i = 0; i < str.length; i++) {
     let rawcode = keyCodes.characterMap[str.charAt(i).toLowerCase()];
-    publishKey(rawcode, 0);
-    await user32.sleep(100);
+    publishKey(rawcode, 0, channel);
+    await user32.sleep(150);
+  }
+  if (returnTermination) {
+    publishKey('RETURN', 0, channel);
   }
 }
 

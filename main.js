@@ -28,28 +28,28 @@ const subscriber = new Redis({host: config.redis.host, port: config.redis.port})
 
 ioHook.on('keydown', async key => {
 
-  if (key.rawcode === 122) { // F11
-    // console.log(eq.charData.toStruct());
-    // console.log(eq.target.toStruct());
-    redisUtils.publishKey('0', 0, 'ENCHANTER');
+  // Toggle AutoHeal  = // Re-get group when toggling on - so its always got correct pointers
+  if (key.rawcode === 45) { // INSERT KEY
+    if (!Group.getGroup().length || !IntervalManager.getInterval('autoHeal')) {
+      await Group.setGroup();
+    }
+    await autos.toggleAutoHeal();
+    await autos.toggleAutoDamageShield();r
   }
 
-  if (key.rawcode === 123) { // F12
-    launch.launch();
-    redisUtils.publish('LAUNCH', JSON.stringify({message: 'LAUNCH'}));
-  }
+  /**
+   * Primary Group Action Keys - Casual Killing
+   */
 
-  // Assist
+  // Assist - Pets in, Attack on
   if (key.rawcode === 96) { // Numpad 0
-    redisUtils.publishKey('NUMPAD6', 0, 'ENCHANTER');
-    redisUtils.publishKey('NUMPAD6', 0, 'MAGICIAN');
-    redisUtils.publishKey('1', 0, 'BARD');
-
+    redisUtils.publishKey('1', 2000, 'CASTER');
+    redisUtils.publishKey('1', 2000, 'MELEE');
   }
 
   // Nuke
   if (key.rawcode === 97) { // Numpad 1
-    redisUtils.publishKey('4', 0, 'MAGICIAN');
+    redisUtils.publishKey('3', 0, 'MAGICIAN');
   }
 
   // Sit
@@ -65,70 +65,108 @@ ioHook.on('keydown', async key => {
 
   // Dots
   if (key.rawcode === 100) { // Numpad 4
-    // redisUtils.publishKey('4', 2000, 'CASTER');
     redisUtils.publishKey('4', 2000, 'DRUID');
   }
 
   // Re-Charm
   if (key.rawcode === 101) { // Numpad 5
-    redisUtils.publishKey('5', 0, 'ENCHANTER');
+    redisUtils.publishKey('4', 0, 'ENCHANTER');
     await user32.sleep(500);
-    redisUtils.publishKey('8', 0, 'MAGICIAN');
+    redisUtils.publishKey('4', 1500, 'MAGICIAN');
   }
 
   // Mez
   if (key.rawcode === 102) { // Numpad 6
-    console.log('Mezzing?');
-    redisUtils.publishKey('6', 0, 'ENCHANTER');
+    redisUtils.publishKey('5', 0, 'ENCHANTER');
   }
 
-  // Toggle AutoDamageShield
+
+  // Forward Thinking as this will be a thing in Kunark with Group Aego / Clarity, etc
   if (key.rawcode === 103) { // Numpad 7
-    autos.toggleAutoDamageShield();
+    await buffUtils.doGroupBuffs();
   }
 
+  // Group Clarity
   if (key.rawcode === 104) { // Numpad 8
-    buffUtils.doGroupClarity();
+    await buffUtils.doGroupClarity();
   }
 
+  // Buff Target
   if (key.rawcode === 105) { // Numpad 9
     await buffUtils.buffTarget();
   }
 
-  // Toggle AutoHeal  = // Re-get group when toggling on - so its always got correct pointers
+  /**
+   * EVERYBODY NUKES!
+   */
   if (key.rawcode === 106) { // Numpad *
-    if (!Group.getGroup().length || !IntervalManager.getInterval('autoHeal')) {
-      await Group.setGroup();
-    }
-    await autos.toggleAutoHeal();
+    redisUtils.publishKey('3', 0, 'MAGICIAN');
+    redisUtils.publishKey('4', 0, 'CLERIC');
+    redisUtils.publishKey('5', 0, 'DRUID');
   }
 
-  // Debuff
+  if(key.rawcode === 107) { // Numpad +
+
+  }
+
   if (key.rawcode === 109) { // Numpad -
-    // redisUtils.publishKey('NUMPAD7', 1000, 'ENCHANTER');
-    redisUtils.publishKey('NUMPAD7', 1000, 'MAGICIAN');
+
+  }
+
+  if (key.rawcode === 110) { // Numpad .
+
   }
 
   if (key.rawcode === 111) { // Numpad /
-    await buffUtils.buffTarget();
+
   }
 
+  /**
+   * Camera Orientation
+   */
+
+  // Center Camera
   if (key.rawcode === 35) { // End
     redisUtils.publishKey('END', 1000, 'MELEE');
     redisUtils.publishKey('END', 1000, 'CASTER');
     redisUtils.publishKey('END', 1000, 'HEALER');
   }
 
+  // Look Up
   if (key.rawcode === 33) { // Page Up
     redisUtils.publishKey('PRIOR', 1000, 'MELEE');
     redisUtils.publishKey('PRIOR', 1000, 'CASTER');
     redisUtils.publishKey('PRIOR', 1000, 'HEALER');
   }
 
+  // Look Down
   if (key.rawcode === 34) { // Page Down
     redisUtils.publishKey('NEXT', 1000, 'MELEE');
     redisUtils.publishKey('NEXT', 1000, 'CASTER');
     redisUtils.publishKey('NEXT', 1000, 'HEALER');
+  }
+
+
+  /**
+   * Launch EQGame Script
+   */
+
+  // Launch / Re-Launch
+  if (key.rawcode === 123) { // F12
+    launch.launch();
+    redisUtils.publish('LAUNCH', JSON.stringify({message: 'LAUNCH'}));
+  }
+
+  /**
+   * Test Key
+   */
+
+  // TEST KEY
+  if (key.rawcode === 122) { // F11
+    // console.log(eq.charData.toStruct());
+    // console.log(eq.target.toStruct());
+
+    await redisUtils.publishKeySequence('/memspellset gate', 'ENCHANTER', true);
   }
 
   /**

@@ -82,41 +82,9 @@ const scanCodes = {
   NUMPAD3: 0x51,
   NUMPAD0: 0x52,
   DECIMAL: 0x53, /* . on numeric keypad */
-  OEM_102: 0x56, /* < > | on UK/Germany keyboards */
   F11: 0x57,
   F12: 0x58,
-  F13: 0x64, /*                     (NEC PC98) */
-  F14: 0x65, /*                     (NEC PC98) */
-  F15: 0x66, /*                     (NEC PC98) */
-  KANA: 0x70, /* (Japanese keyboard)            */
-  ABNT_C1: 0x73, /* / ? on Portugese (Brazilian) keyboards */
-  CONVERT: 0x79, /* (Japanese keyboard)            */
-  NOCONVERT: 0x7B, /* (Japanese keyboard)            */
-  YEN: 0x7D, /* (Japanese keyboard)            */
-  ABNT_C2: 0x7E, /* Numpad . on Portugese (Brazilian) keyboards */
-  NUMPADEQUALS: 0x8D, /* = on numeric keypad (NEC PC98) */
-  CIRCUMFLEX: 0x90, /* (Japanese keyboard)            */
-  AT: 0x91, /*                     (NEC PC98) */
-  COLON: 0x92, /*                     (NEC PC98) */
-  UNDERLINE: 0x93, /*                     (NEC PC98) */
-  KANJI: 0x94, /* (Japanese keyboard)            */
-  STOP: 0x95, /*                     (NEC PC98) */
-  AX: 0x96, /*                     (Japan AX) */
-  UNLABELED: 0x97, /*                        (J3100) */
-  NEXTTRACK: 0x99, /* Next Track */
-  NUMPADENTER: 0x9C, /* Enter on numeric keypad */
-  RCONTROL: 0x9D,
-  MUTE: 0xA0, /* Mute */
-  CALCULATOR: 0xA1, /* Calculator */
-  PLAYPAUSE: 0xA2, /* Play / Pause */
-  MEDIASTOP: 0xA4, /* Media Stop */
-  VOLUMEDOWN: 0xAE, /* Volume - */
-  VOLUMEUP: 0xB0, /* Volume + */
-  WEBHOME: 0xB2, /* Web home */
-  NUMPADCOMMA: 0xB3, /* , on numeric keypad (NEC PC98) */
   DIVIDE: 0xB5, /* / on numeric keypad */
-  SYSRQ: 0xB7,
-  RMENU: 0xB8, /* right Alt */
   PAUSE: 0xC5, /* Pause */
   HOME: 0xC7, /* Home on arrow keypad */
   UP: 0xC8, /* UpArrow on arrow keypad */
@@ -128,21 +96,6 @@ const scanCodes = {
   NEXT: 0xD1, /* PgDn on arrow keypad */
   INSERT: 0xD2, /* Insert on arrow keypad */
   DELETE: 0xD3, /* Delete on arrow keypad */
-  LWIN: 0xDB, /* Left Windows key */
-  RWIN: 0xDC, /* Right Windows key */
-  APPS: 0xDD, /* AppMenu key */
-  POWER: 0xDE,
-  SLEEP: 0xDF,
-  WAKE: 0xE3, /* System Wake */
-  WEBSEARCH: 0xE5, /* Web Search */
-  WEBFAVORITES: 0xE6, /* Web Favorites */
-  WEBREFRESH: 0xE7, /* Web Refresh */
-  WEBSTOP: 0xE8, /* Web Stop */
-  WEBFORWARD: 0xE9, /* Web Forward */
-  WEBBACK: 0xEA, /* Web Back */
-  MYCOMPUTER: 0xEB, /* My Computer */
-  MAIL: 0xEC, /* Mail */
-  MEDIASELECT: 0xED    /* Media Select */
 };
 
 const keyCodes = {

@@ -65,17 +65,6 @@ function getTarget(targetId, targetName) {
   }
 }
 
-
-async function getDistanceFromTarget() {
-  let target = eq.target;
-  let me = eq.spawnInfoList.final();
-  while (target) {
-    redisUtils.log(moveUtils.getDistance(me, target));
-    await user32.sleep(500);
-    target = eq.target;
-  }
-}
-
 function getHeading(me, target) {
   let distToTarget = getDistance(me, target);
   let angle = me.heading;
@@ -113,6 +102,5 @@ module.exports = {
   moveToTarget: moveToTarget,
   getDistance: getDistance,
   getTarget: getTarget,
-  getHeading: getHeading,
   moveBackToCamp: moveBackToCamp
 };
