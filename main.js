@@ -58,9 +58,9 @@ ioHook.on('keydown', async key => {
     redisUtils.publishKey('2', 3000, 'HEALER');
   }
 
-  // Bard
+  // Bard Melody
   if (key.rawcode === 99) { // Numpad 3
-    autos.toggleBardMelody();
+    redisUtils.publishKey('3', 0, 'BARD');
   }
 
   // Dots

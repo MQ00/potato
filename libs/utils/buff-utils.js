@@ -6,8 +6,8 @@ async function buffTarget(){
   redisUtils.log('Buffing ' + moveUtils.getTarget());
 
   // Use assist key to gain the target to buff, don't spam so add delay randoms
-  redisUtils.publishKey('NUMPAD6', 100, 'CASTER');
-  redisUtils.publishKey('NUMPAD6', 100, 'HEALER');
+  redisUtils.publishKey('1', 100, 'CASTER');
+  redisUtils.publishKey('1', 100, 'HEALER');
   await user32.sleep(2000);
 
   await Promise.all([doEnchanterBuffs(), doClericBuffs(), doMiscBuffs()]);
@@ -28,7 +28,7 @@ async function doEnchanterBuffs() {
 
   // Load Buff Spellset
   redisUtils.publishKey('9', 0, 'ENCHANTER');
-  await user32.sleep(10000);
+  await user32.sleep(9000);
 
   // Clarity
   redisUtils.publishKey('NUMPAD8', 200, 'ENCHANTER');
@@ -91,9 +91,8 @@ async function doGroupClarity() {
 // CMON KUUUUNARK!
 async function doGroupBuffs() {
   redisUtils.log('Doing Group Buffs');
-  await redisUtils.publishKeySequence('/memspellset groupbuffs', 'ENCHANTER');
-  await redisUtils.publishKeySequence('/memspellset groupbuffs', 'CLERIC');
-
+  await redisUtils.publishKeySequence('/memspellset groupbuffs', 'ENCHANTER', true);
+  await redisUtils.publishKeySequence('/memspellset groupbuffs', 'CLERIC', true);
 }
 
 module.exports = {

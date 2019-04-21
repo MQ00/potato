@@ -6,12 +6,15 @@ const IntervalManager = require('./IntervalManager');
 
 const memberKeyIndexes = config.user.groupMembers;
 
+// TODO:  Lots of improvements can be made here to make auto heal more robust
+// Validate heal target is in range of healer
+// Stagger heal instructions across multiple healers
 async function autoHeal() {
   for (let member of Group.getGroup()) {
     if ((member.current_health < 75
       || (member.first_name === memberKeyIndexes[0]
         && member.current_health < member.max_health * 0.75))
-        && member.id && !member.first_name.includes('corpse')) { // && moveUtils.getDistance(healer, member) < 100  - do this at some point
+        && member.id && !member.first_name.includes('corpse')) {
       await toggleAutoHeal();
       redisUtils.log('Healing ' + member.first_name);
       let fkey = 'NUMPAD' + memberKeyIndexes.indexOf(member.first_name);
@@ -51,39 +54,7 @@ function toggleAutoDamageShield(toggle, delay) {
   }
 }
 
-function toggleBardMelody() {
-  redisUtils.publishKey('4', 0, 'BARD');
-}
-
-function toggleAutoMez() {
-  if (!IntervalManager.getInterval('autoMez')) {
-    redisUtils.log('Auto Mez On');
-    IntervalManager.setInterval('autoMez', async () => {
-      // Magical Code
-    }, 5000);
-  } else {
-    redisUtils.log('Auto Mez Off');
-    IntervalManager.clearInterval('autoMez');
-  }
-}
-
-function toggleAutoBuffs() {
-  if (!IntervalManager.getInterval('autoBuffs')) {
-    redisUtils.log('Auto Buffs On');
-    doClericBuffs();
-    doGroupClarity();
-    IntervalManager.setInterval('autoBuffs', async () => {
-      doClericBuffs();
-      doGroupClarity();
-    }, 1200000);
-  } else {
-    redisUtils.log('Auto Buffs Off');
-    IntervalManager.clearInterval('autoBuffs');
-  }
-}
-
 module.exports = {
   toggleAutoDamageShield: toggleAutoDamageShield,
-  toggleAutoHeal: toggleAutoHeal,
-  toggleBardMelody: toggleBardMelody,
+  toggleAutoHeal: toggleAutoHeal
 };
