@@ -450,7 +450,7 @@ accessorize(SpawnInfoList, _oSpawnInfoList);
 class SpawnInfo extends MemoryStruct {
 
   get class_name() {
-    return CLASS_LIST[this.class];
+    return CLASS_LIST.classList[this.class];
   }
 
   get race_name() {

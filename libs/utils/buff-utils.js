@@ -34,10 +34,6 @@ async function doEnchanterBuffs() {
   redisUtils.publishKey('NUMPAD8', 200, 'ENCHANTER');
   await user32.sleep(6000);
 
-  // Haste
-  redisUtils.publishKey('NUMPAD9', 200, 'ENCHANTER');
-  await user32.sleep(11000);
-
   // GMR
   redisUtils.publishKey('NUMPAD7', 0, 'ENCHANTER');
   await user32.sleep(8000);
@@ -91,8 +87,8 @@ async function doGroupClarity() {
 // CMON KUUUUNARK!
 async function doGroupBuffs() {
   redisUtils.log('Doing Group Buffs');
-  await redisUtils.publishKeySequence('/memspellset groupbuffs', 'ENCHANTER', true);
-  await redisUtils.publishKeySequence('/memspellset groupbuffs', 'CLERIC', true);
+  // await redisUtils.publishKeySequence('/memspellset groupbuffs', 'ENCHANTER', true);
+  // await redisUtils.publishKeySequence('/memspellset groupbuffs', 'CLERIC', true);
 }
 
 module.exports = {

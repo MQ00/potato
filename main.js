@@ -31,10 +31,10 @@ ioHook.on('keydown', async key => {
   // Toggle AutoHeal  = // Re-get group when toggling on - so its always got correct pointers
   if (key.rawcode === 45) { // INSERT KEY
     if (!Group.getGroup().length || !IntervalManager.getInterval('autoHeal')) {
-      await Group.setGroup();
+      await Group.setInitialGroup();
     }
     await autos.toggleAutoHeal();
-    await autos.toggleAutoDamageShield();r
+    await autos.toggleAutoDamageShield();
   }
 
   /**
@@ -44,7 +44,7 @@ ioHook.on('keydown', async key => {
   // Assist - Pets in, Attack on
   if (key.rawcode === 96) { // Numpad 0
     redisUtils.publishKey('1', 2000, 'CASTER');
-    redisUtils.publishKey('1', 2000, 'MELEE');
+    redisUtils.publishKey('1', 0, 'MELEE');
   }
 
   // Nuke
@@ -58,9 +58,10 @@ ioHook.on('keydown', async key => {
     redisUtils.publishKey('2', 3000, 'HEALER');
   }
 
-  // Bard Melody
+  // MONK or Bard
   if (key.rawcode === 99) { // Numpad 3
     redisUtils.publishKey('3', 0, 'BARD');
+    redisUtils.publishKey('3', 0, 'MONK');
   }
 
   // Dots
@@ -84,6 +85,7 @@ ioHook.on('keydown', async key => {
   // Forward Thinking as this will be a thing in Kunark with Group Aego / Clarity, etc
   if (key.rawcode === 103) { // Numpad 7
     await buffUtils.doGroupBuffs();
+    redisUtils.publishKey('5', 500, 'MAGICIAN');
   }
 
   // Group Clarity
@@ -105,20 +107,33 @@ ioHook.on('keydown', async key => {
     redisUtils.publishKey('5', 0, 'DRUID');
   }
 
+  // Heal Target
   if(key.rawcode === 107) { // Numpad +
-
+    redisUtils.publishKey('3', 0, 'CLERIC');
   }
 
+  // Global Assist
   if (key.rawcode === 109) { // Numpad -
-
+    redisUtils.publishKey('1', 2000, 'CASTER');
+    redisUtils.publishKey('1', 0, 'MELEE');
+    redisUtils.publishKey('1', 0, 'HEALER');
   }
 
+  // HASTE
   if (key.rawcode === 110) { // Numpad .
+    // Load Buff Spellset
+    redisUtils.publishKey('9', 0, 'ENCHANTER');
+    await user32.sleep(9000);
+
+    // Haste
+    redisUtils.publishKey('NUMPAD9', 200, 'ENCHANTER');
+    await user32.sleep(11000);
 
   }
 
+  // Add current target to AutoHeal List
   if (key.rawcode === 111) { // Numpad /
-
+    Group.addToGroup();
   }
 
   /**
@@ -166,7 +181,24 @@ ioHook.on('keydown', async key => {
     // console.log(eq.charData.toStruct());
     // console.log(eq.target.toStruct());
 
-    await redisUtils.publishKeySequence('/memspellset gate', 'ENCHANTER', true);
+    // await redisUtils.publishKeySequence('/memspellset gate', 'ENCHANTER', true);
+
+    // // Everybody Bind at the Soulbinder!!
+    // await redisUtils.publishKeySequence('/target Soulbinder', 'MELEE', true);
+    // await redisUtils.publishKeySequence('/target Soulbinder', 'CASTER', true);
+    // await redisUtils.publishKeySequence('/target Soulbinder', 'HEALER', true);
+    // user32.sleep(5000);
+    //
+    // await redisUtils.publishKeySequence('/say bind my soul', 'MELEE', true);
+    // await redisUtils.publishKeySequence('/say bind my soul', 'CASTER', true);
+    // await redisUtils.publishKeySequence('/say bind my soul', 'HEALER', true);
+
+
+    // Keep casting a spell to raise skill
+    // while (true) {
+    //   redisUtils.publishKey('6', 0, 'DRUID');
+    //   await user32.sleep(500);
+    // }
   }
 
   /**
@@ -174,7 +206,7 @@ ioHook.on('keydown', async key => {
    */
   // TODO:  Move this code
   if (key.rawcode === 118) { // F7
-    await Group.setGroup();
+    await Group.setInitialGroup();
     await autos.toggleAutoHeal();
     // autos.toggleAutoBuffs();  // TODO FIXEROO
     autos.toggleAutoDamageShield();

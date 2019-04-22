@@ -14,33 +14,31 @@ const config = require('./config.json');
 const Redis = require('ioredis');
 const subscriber = new Redis({host: config.redis.host, port: config.redis.port});
 
-const channelClasses = {
-  healer: ['cleric', 'shaman', 'druid'],
-  melee: ['bard', 'monk', 'rogue', 'warrior', 'ranger', 'paladin', 'shadow knight'],
-  caster: ['enchanter', 'magician', 'necromancer', 'wizard'],
-};
-
 const myClass = classes[eq.charData.class].toLowerCase();
 
-subscriber.subscribe('MELEE');
-subscriber.subscribe('CASTER');
-subscriber.subscribe('HEALER');
-subscriber.subscribe('CLERIC');
-subscriber.subscribe('ENCHANTER');
-subscriber.subscribe('MAGICIAN');
-subscriber.subscribe('BARD');
-subscriber.subscribe('DRUID');
+if (classes.channelClasses.melee.includes(myClass)) {
+    subscriber.subscribe('MELEE');
+}
+
+if (classes.channelClasses.caster.includes(myClass)) {
+    subscriber.subscribe('CASTER');
+}
+
+if (classes.channelClasses.healer.includes(myClass)) {
+    subscriber.subscribe('HEALER');
+}
+
+subscriber.subscribe(myClass.toUpperCase());
+subscriber.subscribe(eq.charData.first_name);
 subscriber.subscribe('LAUNCH');
 
 subscriber.on('message', (channel, m) => {
-  let chan = channel.toLowerCase();
-  let message = JSON.parse(m); // This should always be a JSON string
-  if (channel === 'LAUNCH') {
-    launch.launch();
-  }
-  else if (myClass === chan || (channelClasses[chan] && channelClasses[chan].includes(myClass))) {
-    setTimeout(async () => {
-      await user32.keyTap(message.key);
-    }, Math.floor(Math.random() * Math.floor(message.random)));
-  }
+    let message = JSON.parse(m); // This should always be a JSON string
+    if (channel === 'LAUNCH') {
+        launch.launch();
+    } else {
+        setTimeout(async () => {
+            await user32.keyTap(message.key);
+        }, Math.floor(Math.random() * Math.floor(message.random)));
+    }
 });

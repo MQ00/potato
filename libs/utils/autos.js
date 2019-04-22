@@ -12,14 +12,13 @@ const memberKeyIndexes = config.user.groupMembers;
 async function autoHeal() {
   for (let member of Group.getGroup()) {
     if ((member.current_health < 75
-      || (member.first_name === memberKeyIndexes[0]
+      || (!Group.getGroup().indexOf(member) // 0 for Tank so have to do different math
         && member.current_health < member.max_health * 0.75))
-        && member.id && !member.first_name.includes('corpse')) {
+      && member.id && !member.first_name.includes('corpse')) {
       await toggleAutoHeal();
-      redisUtils.log('Healing ' + member.first_name);
-      let fkey = 'NUMPAD' + memberKeyIndexes.indexOf(member.first_name);
-      redisUtils.publishKey(fkey, 0, 'HEALER');
-      await user32.sleep(500);
+      for (let healer of Group.getHealers()) {
+        redisUtils.publishKey('F' + healer.list[Group.getGroup().indexOf(member)]);
+      }
       redisUtils.publishKey('3', 200, 'HEALER');
       await user32.sleep(5000);
       await toggleAutoHeal();
@@ -32,7 +31,7 @@ async function toggleAutoHeal() {
     redisUtils.log('Auto Heal Toggled On');
     IntervalManager.setInterval('autoHeal', async () => {
       await autoHeal();
-    }, 200);
+    }, 100);
   } else {
     redisUtils.log('Auto Heal Toggled Off');
     IntervalManager.clearInterval('autoHeal');
