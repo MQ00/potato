@@ -14,7 +14,7 @@ const config = require('./config.json');
 const Redis = require('ioredis');
 const subscriber = new Redis({host: config.redis.host, port: config.redis.port});
 
-const myClass = classes[eq.charData.class].toLowerCase();
+const myClass = classes.classList[eq.charData.class].toLowerCase();
 
 if (classes.channelClasses.melee.includes(myClass)) {
     subscriber.subscribe('MELEE');

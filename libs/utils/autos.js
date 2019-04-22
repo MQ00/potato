@@ -1,10 +1,7 @@
 const redisUtils = require('./redis-utils');
 const Group = require('./GroupManager');
 const user32 = require('./user32');
-const config = require('../../config');
 const IntervalManager = require('./IntervalManager');
-
-const memberKeyIndexes = config.user.groupMembers;
 
 // TODO:  Lots of improvements can be made here to make auto heal more robust
 // Validate heal target is in range of healer
