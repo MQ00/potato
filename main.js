@@ -1,6 +1,7 @@
 const config = require('./config.json');
 
 const user32 = require('./libs/utils/user32');
+const keyCodes = require('./libs/utils/keymap');
 const combatUtils = require('./libs/utils/combat-utils');
 const autos = require('./libs/utils/autos');
 const redisUtils = require('./libs/utils/redis-utils');
@@ -133,7 +134,7 @@ ioHook.on('keydown', async key => {
 
   // Add current target to AutoHeal List
   if (key.rawcode === 111) { // Numpad /
-    Group.addToGroup();
+    await Group.addToGroup();
   }
 
   /**
@@ -199,6 +200,15 @@ ioHook.on('keydown', async key => {
     //   redisUtils.publishKey('6', 0, 'DRUID');
     //   await user32.sleep(500);
     // }
+
+    let str = '/target forrondyx';
+    for (let i = 0; i < str.length; i++) {
+      let rawcode = keyCodes.characterMap[str.charAt(i).toLowerCase()];
+      await user32.keyTap(rawcode);
+      // await user32.sleep(150);
+    }
+      await user32.keyTap('RETURN');
+
   }
 
   /**

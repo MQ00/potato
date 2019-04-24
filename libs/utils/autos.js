@@ -14,7 +14,12 @@ async function autoHeal() {
       && member.id && !member.first_name.includes('corpse')) {
       await toggleAutoHeal();
       for (let healer of Group.getHealers()) {
-        redisUtils.publishKey('F' + healer.list[Group.getGroup().indexOf(member)], 0, healer.name);
+        if (healer.list[Group.getGroup().indexOf(member)]) {
+          redisUtils.publishKey('F' + healer.list[Group.getGroup().indexOf(member)], 0, healer.name);
+        } else {
+          await redisUtils.publishKeySequence(`/target ${member.first_name}`, healer.name, true);
+          redisUtils.publishKey('3', 300, healer.name);
+        }
       }
       redisUtils.publishKey('3', 200, 'HEALER');
       await user32.sleep(5000);

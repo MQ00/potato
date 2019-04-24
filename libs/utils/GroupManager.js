@@ -48,7 +48,8 @@ class Group {
     }
   };
 
-  addToGroup() {
+  async addToGroup() {
+    console.log('Adding ' + eq.target.first_name + ' to Group');
     this._group.push(eq.target);
   }
 

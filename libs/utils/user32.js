@@ -36,7 +36,7 @@ function KeyToggle(key, type) {
 
 async function KeyTap(key) {
   KeyToggle(key, "down");
-  await sleep(125);
+  await sleep(25);
   KeyToggle(key, "up");
 }
 

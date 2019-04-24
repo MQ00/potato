@@ -26,24 +26,24 @@ async function doMiscBuffs() {
 
 async function doEnchanterBuffs() {
 
-  // Load Buff Spellset
-  redisUtils.publishKey('9', 0, 'ENCHANTER');
-  await user32.sleep(9000);
+  // // Load Buff Spellset
+  // redisUtils.publishKey('9', 0, 'ENCHANTER');
+  // await user32.sleep(9000);
 
   // Clarity
   redisUtils.publishKey('NUMPAD8', 200, 'ENCHANTER');
   await user32.sleep(6000);
 
-  // GMR
-  redisUtils.publishKey('NUMPAD7', 0, 'ENCHANTER');
+  // Haste
+  redisUtils.publishKey('NUMPAD9', 0, 'ENCHANTER');
   await user32.sleep(8000);
 
   // Sit
   redisUtils.publishKey('2', 0, 'ENCHANTER');
   await user32.sleep(1000);
 
-  // Load Fight Spell Set
-  redisUtils.publishKey('0', 0, 'ENCHANTER');
+  // // Load Fight Spell Set
+  // redisUtils.publishKey('0', 0, 'ENCHANTER');
 }
 
 async function doClericBuffs() {
