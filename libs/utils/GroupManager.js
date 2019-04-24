@@ -9,6 +9,7 @@ class Group {
     if(!Group.instance){
       this._group = [];
       this._healers = [];
+      this._beingHealed = [];
       Group.instance = this;
     }
 
@@ -17,6 +18,7 @@ class Group {
 
   async setInitialGroup(){
     this._group.length = 0;
+    this._healers.length = 0;
     for (let i = 1; i < 7; i++) {
       await user32.keyTap('F' + i);
       console.log('Adding ' + eq.target.first_name + ' to the group');
@@ -57,8 +59,33 @@ class Group {
     return this._group;
   }
 
+  getGroupList() {
+    for (let member of this._group) {
+      console.log(member.first_name);
+    }
+  }
+
+  lockHealer(name) {
+    const healerIndex = this._healers.findIndex((healer) => {
+      return healer.name === name;
+    });
+    this._healers[healerIndex].locked = !this._healers[healerIndex].locked;
+  }
+
   getHealers() {
     return this._healers;
+  }
+
+  addBeingHealed(name) {
+    this._beingHealed.push(name);
+  }
+
+  isBeingHealed(name) {
+    return this._beingHealed.indexOf(name) > -1;
+  }
+
+  removeBeingHealed(name) {
+    this._beingHealed.splice(this._beingHealed.indexOf(name), 1);
   }
 }
 

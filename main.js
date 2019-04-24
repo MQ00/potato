@@ -18,7 +18,6 @@ const Redis = require('ioredis');
 const subscriber = new Redis({host: config.redis.host, port: config.redis.port});
 
 // TODO LIST
-// Rebuff TANK Specifically - Cleric HP + Symbol, Enchanter Clarity (and Haste?), Mage DS, Druid SoW
 
 // Refactor keymap stuff again
 // JS keycode : actual character -  if(lookup(key.rawcode) === 'character') { // do things }
@@ -29,7 +28,7 @@ const subscriber = new Redis({host: config.redis.host, port: config.redis.port})
 
 ioHook.on('keydown', async key => {
 
-  // Toggle AutoHeal  = // Re-get group when toggling on - so its always got correct pointers
+  // Toggle AutoHeal  = // Re-create group when toggling on - so its always got correct pointers
   if (key.rawcode === 45) { // INSERT KEY
     if (!Group.getGroup().length || !IntervalManager.getInterval('autoHeal')) {
       await Group.setInitialGroup();
@@ -81,7 +80,6 @@ ioHook.on('keydown', async key => {
   if (key.rawcode === 102) { // Numpad 6
     redisUtils.publishKey('5', 0, 'ENCHANTER');
   }
-
 
   // Forward Thinking as this will be a thing in Kunark with Group Aego / Clarity, etc
   if (key.rawcode === 103) { // Numpad 7
@@ -201,13 +199,7 @@ ioHook.on('keydown', async key => {
     //   await user32.sleep(500);
     // }
 
-    let str = '/target forrondyx';
-    for (let i = 0; i < str.length; i++) {
-      let rawcode = keyCodes.characterMap[str.charAt(i).toLowerCase()];
-      await user32.keyTap(rawcode);
-      // await user32.sleep(150);
-    }
-      await user32.keyTap('RETURN');
+    // console.log(await Group.getGroupList());
 
   }
 

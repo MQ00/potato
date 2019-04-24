@@ -12,18 +12,25 @@ async function autoHeal() {
       || (!Group.getGroup().indexOf(member) // 0 for Tank so have to do different math
         && member.current_health < member.max_health * 0.75))
       && member.id && !member.first_name.includes('corpse')) {
-      await toggleAutoHeal();
       for (let healer of Group.getHealers()) {
-        if (healer.list[Group.getGroup().indexOf(member)]) {
-          redisUtils.publishKey('F' + healer.list[Group.getGroup().indexOf(member)], 0, healer.name);
-        } else {
-          await redisUtils.publishKeySequence(`/target ${member.first_name}`, healer.name, true);
-          redisUtils.publishKey('3', 300, healer.name);
+        if (!healer.locked && !Group.isBeingHealed(member.first_name)) {
+          console.log(member.first_name + ' needs a heal!');
+          Group.addBeingHealed(member.first_name);
+          console.log('Assigning ' + healer.name + ' to heal ' + member.first_name);
+          Group.lockHealer(healer.name);
+          if (healer.list[Group.getGroup().indexOf(member)]) {
+            redisUtils.publishKey('F' + healer.list[Group.getGroup().indexOf(member)], 0, healer.name);
+          } else {
+            await redisUtils.publishKeySequence(`/target ${member.first_name}`, healer.name, true);
+          }
+          redisUtils.publishKey('3', 0, healer.name);
+          await user32.sleep(5000);
+          console.log(member.first_name + ' has been healed');
+          Group.removeBeingHealed(member.first_name);
+          console.log(healer.name + ' is now available to heal more folks');
+          Group.lockHealer(healer.name);
         }
       }
-      redisUtils.publishKey('3', 200, 'HEALER');
-      await user32.sleep(5000);
-      await toggleAutoHeal();
     }
   }
 }
