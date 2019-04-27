@@ -10,7 +10,7 @@ async function buffTarget(){
   redisUtils.publishKey('1', 100, 'HEALER');
   await user32.sleep(2000);
 
-  await Promise.all([doEnchanterBuffs(), doClericBuffs(), doMiscBuffs()]);
+  await Promise.all([doEnchanterBuffs(), doClericBuffs(), doShamanBuffs(), doMiscBuffs()]);
 }
 
 async function doMiscBuffs() {
@@ -26,31 +26,19 @@ async function doMiscBuffs() {
 
 async function doEnchanterBuffs() {
 
-  // // Load Buff Spellset
-  // redisUtils.publishKey('9', 0, 'ENCHANTER');
-  // await user32.sleep(9000);
-
   // Clarity
   redisUtils.publishKey('NUMPAD8', 200, 'ENCHANTER');
   await user32.sleep(6000);
 
   // Haste
   redisUtils.publishKey('NUMPAD9', 0, 'ENCHANTER');
-  await user32.sleep(8000);
+  await user32.sleep(10000);
 
   // Sit
   redisUtils.publishKey('2', 0, 'ENCHANTER');
-  await user32.sleep(1000);
-
-  // // Load Fight Spell Set
-  // redisUtils.publishKey('0', 0, 'ENCHANTER');
 }
 
 async function doClericBuffs() {
-
-  // Load Buff Spell Sets
-  redisUtils.publishKey('9', 0, 'CLERIC');
-  await user32.sleep(6000);
 
   // Base HP
   redisUtils.publishKey('NUMPAD8', 200, 'CLERIC');
@@ -62,26 +50,26 @@ async function doClericBuffs() {
 
   // Sit
   redisUtils.publishKey('2', 0, 'CLERIC');
-  await user32.sleep(1000);
+}
 
-  // Load Fight Spell Set
-  redisUtils.publishKey('0', 0, 'CLERIC');
+async function doShamanBuffs() {
+  redisUtils.publishKey('NUMPAD8', 500, 'SHAMAN');
+  await user32.sleep(8000);
+  redisUtils.publishKey('NUMPAD9', 500, 'SHAMAN');
+  await user32.sleep(10000);
+  redisUtils.publishKey('2', 500, 'SHAMAN');
 }
 
 async function doGroupClarity() {
   redisUtils.log('Doing Group Clarity');
-  redisUtils.publishKey('9', 1000, 'ENCHANTER');
-  await user32.sleep(10000);
   for (let i = 0; i < 6; i++) {
     let fkey = 'F' + (i + 1);
     redisUtils.publishKey(fkey, 0, 'ENCHANTER');
-    await user32.sleep(200);
+    await user32.sleep(100);
     redisUtils.publishKey('NUMPAD8', 200, 'ENCHANTER');
-    await user32.sleep(6000);
+    await user32.sleep(5800);
   }
   redisUtils.publishKey('2', 200, 'ENCHANTER');
-  await user32.sleep(1000);
-  redisUtils.publishKey('0', 1000, 'ENCHANTER');
 }
 
 // CMON KUUUUNARK!

@@ -21,8 +21,10 @@ class Group {
     this._healers.length = 0;
     for (let i = 1; i < 7; i++) {
       await user32.keyTap('F' + i);
-      console.log('Adding ' + eq.target.first_name + ' to the group');
-      this._group.push(eq.target);
+      if (eq.target.id && !this._group.includes(eq.target.first_name)) {
+        console.log('Adding ' + eq.target.first_name + ' to the group');
+        this._group.push(eq.target);
+      }
     }
 
     this.createHealerIndexes();
@@ -37,6 +39,7 @@ class Group {
         console.log('Constructing Index for', this._group[index].first_name);
         let healerObj = {
           name: this._group[index].first_name,
+          spawn: this._group[index],
           list: [2, null, null, null, null, null]
         };
         healerObj.list[index] = 1;  // F1 is always the client themselves
@@ -50,7 +53,7 @@ class Group {
     }
   };
 
-  async addToGroup() {
+  addToGroup() {
     console.log('Adding ' + eq.target.first_name + ' to Group');
     this._group.push(eq.target);
   }
@@ -74,6 +77,11 @@ class Group {
 
   getHealers() {
     return this._healers;
+  }
+
+  addHealer() {
+    console.log('Adding ' + eq.target.first_name + ' as a Healer');
+    this._healers.push({name: eq.target.first_name, list: []});
   }
 
   addBeingHealed(name) {

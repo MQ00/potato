@@ -112,7 +112,7 @@ const _oSpawnInfo = {
   loc_z: _flt(0x6c),
   current_health: _int(0x588),
   max_health: _int(0x390),
-  current_mana: _int(0x48c),
+  current_mana: _int(0x2e4),
   max_mana: _int(0x240),
   vel_x: _flt(0x70),
   vel_y: _flt(0x74),

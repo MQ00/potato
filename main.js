@@ -1,7 +1,6 @@
 const config = require('./config.json');
 
 const user32 = require('./libs/utils/user32');
-const keyCodes = require('./libs/utils/keymap');
 const combatUtils = require('./libs/utils/combat-utils');
 const autos = require('./libs/utils/autos');
 const redisUtils = require('./libs/utils/redis-utils');
@@ -13,6 +12,9 @@ const IntervalManager = require('./libs/utils/IntervalManager');
 const {fork} = require('child_process');
 
 const ioHook = require('iohook');
+
+const EQMemory = require('./libs/e-cue/structs');
+let eq = EQMemory.instance;
 
 const Redis = require('ioredis');
 const subscriber = new Redis({host: config.redis.host, port: config.redis.port});
@@ -33,7 +35,7 @@ ioHook.on('keydown', async key => {
     if (!Group.getGroup().length || !IntervalManager.getInterval('autoHeal')) {
       await Group.setInitialGroup();
     }
-    await autos.toggleAutoHeal();
+    await autos.toggleAutoHeal((Group.getHealers().length));
     await autos.toggleAutoDamageShield();
   }
 
@@ -118,21 +120,14 @@ ioHook.on('keydown', async key => {
     redisUtils.publishKey('1', 0, 'HEALER');
   }
 
-  // HASTE
+  // Add healer (OOG)
   if (key.rawcode === 110) { // Numpad .
-    // Load Buff Spellset
-    redisUtils.publishKey('9', 0, 'ENCHANTER');
-    await user32.sleep(9000);
-
-    // Haste
-    redisUtils.publishKey('NUMPAD9', 200, 'ENCHANTER');
-    await user32.sleep(11000);
-
+    Group.addHealer();
   }
 
   // Add current target to AutoHeal List
   if (key.rawcode === 111) { // Numpad /
-    await Group.addToGroup();
+    Group.addToGroup();
   }
 
   /**
@@ -178,11 +173,11 @@ ioHook.on('keydown', async key => {
   // TEST KEY
   if (key.rawcode === 122) { // F11
     // console.log(eq.charData.toStruct());
-    // console.log(eq.target.toStruct());
+    console.log(eq.target.toStruct());
 
     // await redisUtils.publishKeySequence('/memspellset gate', 'ENCHANTER', true);
 
-    // // Everybody Bind at the Soulbinder!!
+    // Everybody Bind at the Soulbinder!!
     // await redisUtils.publishKeySequence('/target Soulbinder', 'MELEE', true);
     // await redisUtils.publishKeySequence('/target Soulbinder', 'CASTER', true);
     // await redisUtils.publishKeySequence('/target Soulbinder', 'HEALER', true);
@@ -192,10 +187,14 @@ ioHook.on('keydown', async key => {
     // await redisUtils.publishKeySequence('/say bind my soul', 'CASTER', true);
     // await redisUtils.publishKeySequence('/say bind my soul', 'HEALER', true);
 
+    // Everybody Camp!
+    // await redisUtils.publishKeySequence('/camp', 'MELEE', true);
+    // await redisUtils.publishKeySequence('/camp', 'CASTER', true);
+    // await redisUtils.publishKeySequence('/camp', 'HEALER', true);
 
     // Keep casting a spell to raise skill
     // while (true) {
-    //   redisUtils.publishKey('6', 0, 'DRUID');
+    //   redisUtils.publishKey('6', 0, 'SHAMAN');
     //   await user32.sleep(500);
     // }
 
@@ -208,7 +207,7 @@ ioHook.on('keydown', async key => {
    */
   // TODO:  Move this code
   if (key.rawcode === 118) { // F7
-    await Group.setInitialGroup();
+    Group.setInitialGroup();
     await autos.toggleAutoHeal();
     // autos.toggleAutoBuffs();  // TODO FIXEROO
     autos.toggleAutoDamageShield();
