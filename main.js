@@ -69,6 +69,7 @@ ioHook.on('keydown', async key => {
   // Dots
   if (key.rawcode === 100) { // Numpad 4
     redisUtils.publishKey('4', 2000, 'DRUID');
+    redisUtils.publishKey('4', 2000, 'SHAMAN');
   }
 
   // Re-Charm
@@ -191,6 +192,10 @@ ioHook.on('keydown', async key => {
     // await redisUtils.publishKeySequence('/camp', 'MELEE', true);
     // await redisUtils.publishKeySequence('/camp', 'CASTER', true);
     // await redisUtils.publishKeySequence('/camp', 'HEALER', true);
+
+    await redisUtils.publishKeySequence('/raise', 'MELEE', true);
+    await redisUtils.publishKeySequence('/raise', 'CASTER', true);
+    await redisUtils.publishKeySequence('/raise', 'HEALER', true);
 
     // Keep casting a spell to raise skill
     // while (true) {

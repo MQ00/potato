@@ -1,6 +1,7 @@
 const redisUtils = require('./redis-utils');
 const Group = require('./GroupManager');
 const IntervalManager = require('./IntervalManager');
+const user32 = require('./user32');
 
 // TODO:  Lots of improvements can be made here to make auto heal more robust
 // Validate heal target is in range of healer
@@ -12,9 +13,10 @@ async function autoHeal() {
         && member.current_health < member.max_health * 0.75))
       && member.id && !member.first_name.includes('corpse')) {
       for (let healer of Group.getHealers()) {
-        if (!healer.locked && !Group.isBeingHealed(member.first_name && healer.spawn.current_mana > 5)) {
+        if (!healer.locked && !Group.isBeingHealed(member.first_name) && healer.spawn.current_mana > 10) {
           console.log(member.first_name + ' needs a heal!');
           Group.addBeingHealed(member.first_name);
+          console.log('Being Healed - ' + Group.getBeingHealed());
           console.log('Assigning ' + healer.name + ' to heal ' + member.first_name);
           Group.lockHealer(healer.name);
           if (healer.list[Group.getGroup().indexOf(member)]) {
@@ -27,8 +29,9 @@ async function autoHeal() {
             console.log(member.first_name + ' has been healed');
             Group.removeBeingHealed(member.first_name);
             console.log(healer.name + ' is now available to heal more folks');
+            await user32.sleep(1000);
             Group.lockHealer(healer.name);
-          }, 6000);
+          }, 5000);
         }
       }
     }

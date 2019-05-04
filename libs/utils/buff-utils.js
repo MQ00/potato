@@ -26,9 +26,9 @@ async function doMiscBuffs() {
 
 async function doEnchanterBuffs() {
 
-  // Clarity
+  // GMR
   redisUtils.publishKey('NUMPAD8', 200, 'ENCHANTER');
-  await user32.sleep(6000);
+  await user32.sleep(10000);
 
   // Haste
   redisUtils.publishKey('NUMPAD9', 0, 'ENCHANTER');
@@ -44,9 +44,9 @@ async function doClericBuffs() {
   redisUtils.publishKey('NUMPAD8', 200, 'CLERIC');
   await user32.sleep(7000);
 
-  // Symbol
-  redisUtils.publishKey('NUMPAD9', 200, 'CLERIC');
-  await user32.sleep(7000);
+  // // Symbol
+  // redisUtils.publishKey('NUMPAD9', 200, 'CLERIC');
+  // await user32.sleep(7000);
 
   // Sit
   redisUtils.publishKey('2', 0, 'CLERIC');
@@ -62,6 +62,8 @@ async function doShamanBuffs() {
 
 async function doGroupClarity() {
   redisUtils.log('Doing Group Clarity');
+  await redisUtils.publishKeySequence('/memspellset clarity', 'ENCHANTER', true);
+  await user32.sleep(5000);
   for (let i = 0; i < 6; i++) {
     let fkey = 'F' + (i + 1);
     redisUtils.publishKey(fkey, 0, 'ENCHANTER');
@@ -69,6 +71,8 @@ async function doGroupClarity() {
     redisUtils.publishKey('NUMPAD8', 200, 'ENCHANTER');
     await user32.sleep(5800);
   }
+  await redisUtils.publishKeySequence('/memspellset fight', 'ENCHANTER', true);
+  await user32.sleep(5000);
   redisUtils.publishKey('2', 200, 'ENCHANTER');
 }
 

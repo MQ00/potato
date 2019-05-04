@@ -88,6 +88,10 @@ class Group {
     this._beingHealed.push(name);
   }
 
+  getBeingHealed() {
+    return this._beingHealed;
+  }
+
   isBeingHealed(name) {
     return this._beingHealed.indexOf(name) > -1;
   }
