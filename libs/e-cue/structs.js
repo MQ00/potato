@@ -7,11 +7,11 @@ const CLASS_LIST = require('./classes');
  * the references all have to be shifted by this... weird. */
 const BASE_SHIFT = 0x400000;
 
-const _rZoneData = 0xe8d4d0;
-const _pSpawnInfoList = 0xe7f5a4;
-const _pCharData = 0xe7f5a4;
-const _pCharTarget = 0xe7f678;
-const _pSpellSets = 0x6424a0;
+const _rZoneData = 0xe8e4e0;
+const _pSpawnInfoList = 0xf2eee8;
+const _pCharData = 0xe805bc;
+const _pCharTarget = 0xe80690;
+const _pSpellSets = 0x6424a0; // unknown 2019-05-15
 
 /** helper functions for making the offset definitions look clean
  * and readable while still dynamically reading all values instead
@@ -127,8 +127,8 @@ const _oSpawnInfo = {
   last_name: _str(0x38),
   disp_name: _str(0xe4),
 
-  level:  _byt(0x44d),
-  class:  _byt(0xfa4),
+  level: _byt(0x44d),
+  class: _byt(0xfa4),
   _iRace: _int(0xf9c),
   ownerId: _int(0x380),
   hide: _int(0x3d8),
@@ -163,8 +163,8 @@ const _oCharData = {
 
   standing: _int(0x280), // 100 standing | 110 sitting | 111 crouch
 
-  level:  _byt(0x44d),
-  class:  _byt(0xfa4),
+  level: _byt(0x44d),
+  class: _byt(0xfa4),
   _iRace: _int(0xf9c),
   ownerId: _int(0x380),
   hide: _int(0x3d8),
@@ -513,6 +513,7 @@ accessorize(SpellSet, _oSpellSet);
 // This Singleton pattern works'ish but the game addon is being loaded twice, one on class import then on singleton instantiation? /boggle
 const singleton = Symbol();
 const singletonEnforcer = Symbol();
+
 class EQMemory {
 
   constructor(read_once, enforcer) {
