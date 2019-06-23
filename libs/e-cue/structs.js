@@ -7,10 +7,10 @@ const CLASS_LIST = require('./classes');
  * the references all have to be shifted by this... weird. */
 const BASE_SHIFT = 0x400000;
 
-const _rZoneData = 0xe8e4e0;
-const _pSpawnInfoList = 0xf2eee8;
-const _pCharData = 0xe805bc;
-const _pCharTarget = 0xe80690;
+const _rZoneData = 0xe8f5e0;
+const _pSpawnInfoList = 0xf30fe8; // Linked List of pointers to CharData pointers?
+const _pCharData = 0xe7f3f0;  // a single playerProfileStruct
+const _pCharTarget = 0xe7f444; // Pointer to CharData for UI Target?
 const _pSpellSets = 0x6424a0; // unknown 2019-05-15
 
 /** helper functions for making the offset definitions look clean
@@ -105,21 +105,21 @@ const _oSpawnInfo = {
   _rNext: _int(0x08), // next item in the spawn info list
   _rList: _int(0x0c), // ref to the SpawnInfoList +0x08
 
-  id: _int(0x148),
+  id: _int(0x150),
 
   loc_x: _flt(0x64),
   loc_y: _flt(0x68),
   loc_z: _flt(0x6c),
-  current_health: _int(0x588),
-  max_health: _int(0x390),
-  current_mana: _int(0x2e4),
+  heading: _flt(0x80),
+  current_health: _int(0x3a0),
+  max_health: _int(0x558),
+  current_mana: _int(0x1ec),
   max_mana: _int(0x240),
   vel_x: _flt(0x70),
   vel_y: _flt(0x74),
   vel_z: _flt(0x78),
   speed: _flt(0x7c),
 
-  heading: _flt(0x80),
   angle: _flt(0x84),
   camera: _flt(0x90),
 
@@ -127,11 +127,11 @@ const _oSpawnInfo = {
   last_name: _str(0x38),
   disp_name: _str(0xe4),
 
-  level: _byt(0x44d),
-  class: _byt(0xfa4),
-  _iRace: _int(0xf9c),
-  ownerId: _int(0x380),
-  hide: _int(0x3d8),
+  level: _byt(0x1da),
+  class: _byt(0xfa8),
+  _iRace: _int(0xfa0),
+  ownerId: _int(0x38c),
+  hide: _int(0x4bc),
   type: _byt(0x125),
 };
 
@@ -141,33 +141,30 @@ const _oCharData = {
   _rVtable: _int(0x00),
   _rCharExtraHeader: _int(0x2880), // ref to our CharExtraHeader
 
-  // Vitals
-  id: _int(0x148),
-  first_name: _str(0xa4),
-  last_name: _str(0x2900),
-  disp_name: _str(0xe4),
-  current_health: _int(0x588),
-  max_health: _int(0x390),
-  current_mana: _int(0x48c),
-  max_mana: _int(0x240),
+  id: _int(0x150),
 
-  // Geo
   loc_x: _flt(0x64),
   loc_y: _flt(0x68),
   loc_z: _flt(0x6c),
   heading: _flt(0x80),
+  current_health: _int(0x3a0),
+  max_health: _int(0x558),
+  current_mana: _int(0x1ec),
+  max_mana: _int(0x240),
   vel_x: _flt(0x70),
   vel_y: _flt(0x74),
   vel_z: _flt(0x78),
   speed: _flt(0x7c),
 
-  standing: _int(0x280), // 100 standing | 110 sitting | 111 crouch
+  first_name: _str(0xa4),
+  last_name: _str(0x38),
+  disp_name: _str(0xe4),
 
-  level: _byt(0x44d),
-  class: _byt(0xfa4),
-  _iRace: _int(0xf9c),
-  ownerId: _int(0x380),
-  hide: _int(0x3d8),
+  level: _byt(0x1da),
+  class: _byt(0xfa8),
+  _iRace: _int(0xfa0),
+  ownerId: _int(0x38c),
+  hide: _int(0x4bc),
   type: _byt(0x125),
 
   // Useless data
@@ -571,6 +568,73 @@ class EQMemory {
     return new SpellSet(_rFirstSpellSet.readUInt32LE(), this.read_once);
   }
 }
+
+// const vvSpawnInfo = {
+// 0x0010 	JumpStrength;
+// 0x0014 	SwimStrength;
+// 0x0018 	SpeedMultiplier;
+// 0x001c 	AreaFriction;
+// 0x0020 	AccelerationFriction;
+// 0x0024   CollidingType;  ok finally had time to get this one right, when we collide with something this gets set.
+// 0x0028 	FloorHeight;
+// 0x002c 		bSinksInWater;
+// 0x0030 		PlayerTimeStamp;  doesn't update when on a Vehicle (mounts/boats etc)
+// 0x0034 		LastTimeIdle;
+// 0x0038 		Lastname[0x20];
+// 0x0058 	AreaHPRegenMod; from guild hall pools etc.
+// 0x005c 	AreaEndRegenMod;
+// 0x0060 	AreaManaRegenMod;
+// 0x0064 	Y;
+// 0x0068 	X;
+// 0x006c 	Z;
+// 0x0070 	SpeedY;
+// 0x0074 	SpeedX;
+// 0x0078 	SpeedZ;
+// 0x007c 	SpeedRun;
+// 0x0080 	Heading;
+// 0x0084 	Angle;
+// 0x0088 	AccelAngle;
+// 0x008c 	SpeedHeading;
+// 0x0090 	CameraAngle;
+// 0x0094 		UnderWater; LastHeadEnvironmentType
+// 0x0098 		LastBodyEnvironmentType;
+// 0x009c 		LastFeetEnvironmentType;
+// 0x00a0 		HeadWet; these really are environment related, like lava as well for example
+// 0x00a1 		FeetWet;
+// 0x00a2 		BodyWet;
+// 0x00a3 		LastBodyWet;
+// 0x00a4 		Name[0x40];              ie priest_of_discord00
+// 0x00e4 		DisplayedName[0x40];     ie Priest of Discord
+// 0x0124 		PossiblyStuck;           never seen this be 1 so maybe it was used a a point but not now...
+// 0x0125 		Type;
+// 0x0128     BodyType;	 this really should be renamed to charprops or something its broken anyway
+// 0x012c 		CharPropFiller[0xc];  well since the above is a CharacterPropertyHash we have to pad here...
+// 0x0138 	AvatarHeight;            height of avatar from groundwhen standing for sure see 5C06A0 in Jun 10 2019 test - eqmule
+// 0x013c 	Height;
+// 0x0140 	Width;
+// 0x0144 	Length;
+// 0x0148 		Unknown0x0148;
+// 0x014c 		Unknown0x014C;
+// 0x0150 	SpawnID;
+// 0x0154 	PlayerState;          0=Idle 1=Open 2=WeaponSheathed 4=Aggressive 8=ForcedAggressive 0x10=InstrumentEquipped 0x20=Stunned 0x40=PrimaryWeaponEquipped 0x80=SecondaryWeaponEquipped
+// 0x0158  _SPAWNINFO*	Vehicle;     NULL until you collide with a vehicle (boat,airship etc)
+// 0x015c  _SPAWNINFO*	Mount;       NULL if no mount present
+// 0x0160  _SPAWNINFO*	Rider;       _SPAWNINFO of mount's rider
+// 0x0164 	Unknown0x0164;
+// 0x0168 		Targetable;	 true if mob is targetable
+// 0x0169 		bTargetCyclable;
+// 0x016a 		bClickThrough;
+// 0x016b 		bBeingFlung;
+// 0x016c 		FlingActiveTimer;
+// 0x0170 		FlingTimerStart;
+// 0x0174 		bFlingSomething;
+// 0x0178 	FlingY;
+// 0x017c 	FlingX;
+// 0x0180 	FlingZ;
+// 0x0184 		bFlingSnapToDest;
+// 0x0188 		SplineID;
+// 0x018c 		SplineRiderID;
+// }
 
 
 module.exports = EQMemory;
