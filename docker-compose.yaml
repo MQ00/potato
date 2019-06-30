@@ -2,7 +2,10 @@ version: '3'
 services:
   redis:
     user: $UID
-    build: ./redis
+    image: redis
     container_name: potato_redis
     ports:
       - '6380:6380'
+    command:
+      - redis-server
+      - --port 6380
