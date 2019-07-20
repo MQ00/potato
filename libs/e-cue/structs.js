@@ -7,10 +7,10 @@ const CLASS_LIST = require('./classes');
  * the references all have to be shifted by this... weird. */
 const BASE_SHIFT = 0x400000;
 
-const _rZoneData = 0xe8f5e0;
-const _pSpawnInfoList = 0xf30fe8; // Linked List of pointers to CharData pointers?
-const _pCharData = 0xe7f3f0;  // a single playerProfileStruct
-const _pCharTarget = 0xe7f444; // Pointer to CharData for UI Target?
+const _rZoneData = 0xe9ad40;
+const _pSpawnInfoList = 0xe8ac50; // Linked List of pointers to CharData pointers?
+const _pCharData = 0xe8ac50;  // a single playerProfileStruct
+const _pCharTarget = 0xe8aca4; // Pointer to CharData for UI Target?
 const _pSpellSets = 0x6424a0; // unknown 2019-05-15
 
 /** helper functions for making the offset definitions look clean
