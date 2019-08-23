@@ -7,10 +7,10 @@ const CLASS_LIST = require('./classes');
  * the references all have to be shifted by this... weird. */
 const BASE_SHIFT = 0x400000;
 
-const _rZoneData = 0xe9ad40;
-const _pSpawnInfoList = 0xe8ac50; // Linked List of pointers to CharData pointers?
-const _pCharData = 0xe8ac50;  // a single playerProfileStruct
-const _pCharTarget = 0xe8aca4; // Pointer to CharData for UI Target?
+const _rZoneData = 0xe9f248;
+const _pSpawnInfoList = 0xe8f348; // Linked List of pointers to CharData pointers?
+const _pCharData = 0xe8f348;  // a single playerProfileStruct
+const _pCharTarget = 0xe8f39c; // Pointer to CharData for UI Target?
 const _pSpellSets = 0x6424a0; // unknown 2019-05-15
 
 /** helper functions for making the offset definitions look clean
@@ -111,28 +111,38 @@ const _oSpawnInfo = {
   loc_y: _flt(0x68),
   loc_z: _flt(0x6c),
   heading: _flt(0x80),
-  current_health: _int(0x3a0),
-  max_health: _int(0x558),
-  current_mana: _int(0x1ec),
-  max_mana: _int(0x240),
   vel_x: _flt(0x70),
   vel_y: _flt(0x74),
   vel_z: _flt(0x78),
   speed: _flt(0x7c),
-
   angle: _flt(0x84),
   camera: _flt(0x90),
-
   first_name: _str(0xa4),
   last_name: _str(0x38),
   disp_name: _str(0xe4),
 
-  level: _byt(0x1da),
-  class: _byt(0xfa8),
-  _iRace: _int(0xfa0),
-  ownerId: _int(0x38c),
-  hide: _int(0x4bc),
+  // current_health: _int(0x198),
+  current_health: _int(0x3b8),
+  // max_health: _int(0x5a0),
+  max_health: _int(0x438),
+  // current_mana: _int(0x4d0),
+  current_mana: _int(0x210),
+  // max_mana: _int(0x4d0),
+  max_mana: _int(0x200),
+
+  // level: _byt(0x1da),
+  // class: _byt(0xfa8),
+  // _iRace: _int(0xfa0),
+  // ownerId: _int(0x38c),
+  // hide: _int(0x4bc),
+  // type: _byt(0x125),
+
   type: _byt(0x125),
+  ownerId: _int(0x55c),
+  hide: _int(0x504),
+  level: _byt(0x404),
+  class: _byt(0xf9c),
+  _iRace: _int(0xf94),
 };
 
 
@@ -147,29 +157,31 @@ const _oCharData = {
   loc_y: _flt(0x68),
   loc_z: _flt(0x6c),
   heading: _flt(0x80),
-  current_health: _int(0x3a0),
-  max_health: _int(0x558),
-  current_mana: _int(0x1ec),
-  max_mana: _int(0x240),
   vel_x: _flt(0x70),
   vel_y: _flt(0x74),
   vel_z: _flt(0x78),
   speed: _flt(0x7c),
-
+  angle: _flt(0x84),
+  camera: _flt(0x90),
   first_name: _str(0xa4),
   last_name: _str(0x38),
   disp_name: _str(0xe4),
 
-  level: _byt(0x1da),
-  class: _byt(0xfa8),
-  _iRace: _int(0xfa0),
-  ownerId: _int(0x38c),
-  hide: _int(0x4bc),
-  type: _byt(0x125),
+  // current_health: _int(0x198),
+  current_health: _int(0x3b8),
+  // max_health: _int(0x5a0),
+  max_health: _int(0x438),
+  // current_mana: _int(0x4d0),
+  current_mana: _int(0x210),
+  // max_mana: _int(0x4d0),
+  max_mana: _int(0x200),
 
-  // Useless data
-  angle: _flt(0x84),
-  camera: _flt(0x90),
+  type: _byt(0x125),
+  ownerId: _int(0x55c),
+  hide: _int(0x504),
+  level: _byt(0x404),
+  class: _byt(0xf9c),
+  _iRace: _int(0xf94),
   lang_skills: _arr(0x2890, 0x18), // TODO: split this out or make some lookup table
 
   // TODO:  Invalid offsets
