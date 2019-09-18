@@ -7,10 +7,10 @@ const CLASS_LIST = require('./classes');
  * the references all have to be shifted by this... weird. */
 const BASE_SHIFT = 0x400000;
 
-const _rZoneData = 0xe9f248;
-const _pSpawnInfoList = 0xe8f348; // Linked List of pointers to CharData pointers?
-const _pCharData = 0xe8f348;  // a single playerProfileStruct
-const _pCharTarget = 0xe8f39c; // Pointer to CharData for UI Target?
+const _rZoneData = 0xe960e8;
+const _pSpawnInfoList = 0xf37ae8; // Linked List of pointers to CharData pointers?
+const _pCharData = 0xe86300;  // a single playerProfileStruct
+const _pCharTarget = 0xc96bd8; // Pointer to CharData for UI Target?
 const _pSpellSets = 0x6424a0; // unknown 2019-05-15
 
 /** helper functions for making the offset definitions look clean
@@ -122,13 +122,13 @@ const _oSpawnInfo = {
   disp_name: _str(0xe4),
 
   // current_health: _int(0x198),
-  current_health: _int(0x3b8),
+  current_health: _int(0x1f0),
   // max_health: _int(0x5a0),
-  max_health: _int(0x438),
+  max_health: _int(0x1f8),
   // current_mana: _int(0x4d0),
-  current_mana: _int(0x210),
+  current_mana: _int(0x204),
   // max_mana: _int(0x4d0),
-  max_mana: _int(0x200),
+  max_mana: _int(0x43c),
 
   // level: _byt(0x1da),
   // class: _byt(0xfa8),
@@ -140,7 +140,7 @@ const _oSpawnInfo = {
   type: _byt(0x125),
   ownerId: _int(0x55c),
   hide: _int(0x504),
-  level: _byt(0x404),
+  level: _byt(0x515),
   class: _byt(0xf9c),
   _iRace: _int(0xf94),
 };
@@ -168,18 +168,18 @@ const _oCharData = {
   disp_name: _str(0xe4),
 
   // current_health: _int(0x198),
-  current_health: _int(0x3b8),
+  current_health: _int(0x1f0),
   // max_health: _int(0x5a0),
-  max_health: _int(0x438),
-  // current_mana: _int(0x4d0),
-  current_mana: _int(0x210),
+  max_health: _int(0x1f8),
+  // current_mana: _int(0x1f0),
+  current_mana: _int(0x204),
   // max_mana: _int(0x4d0),
-  max_mana: _int(0x200),
+  max_mana: _int(0x43c),
 
   type: _byt(0x125),
   ownerId: _int(0x55c),
   hide: _int(0x504),
-  level: _byt(0x404),
+  level: _byt(0x515),
   class: _byt(0xf9c),
   _iRace: _int(0xf94),
   lang_skills: _arr(0x2890, 0x18), // TODO: split this out or make some lookup table
