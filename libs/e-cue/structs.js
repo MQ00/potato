@@ -7,10 +7,10 @@ const CLASS_LIST = require('./classes');
  * the references all have to be shifted by this... weird. */
 const BASE_SHIFT = 0x400000;
 
-const _rZoneData = 0xe960e8;
-const _pSpawnInfoList = 0xf37ae8; // Linked List of pointers to CharData pointers?
-const _pCharData = 0xe86300;  // a single playerProfileStruct
-const _pCharTarget = 0xc96bd8; // Pointer to CharData for UI Target?
+const _rZoneData = 0xe91108;
+const _pSpawnInfoList = 0xe8131c; // Linked List of pointers to CharData pointers?
+const _pCharData = 0xe8131c;  // a single playerProfileStruct
+const _pCharTarget = 0xe81318; // Pointer to CharData for UI Target?
 const _pSpellSets = 0x6424a0; // unknown 2019-05-15
 
 /** helper functions for making the offset definitions look clean
@@ -122,9 +122,9 @@ const _oSpawnInfo = {
   disp_name: _str(0xe4),
 
   // current_health: _int(0x198),
-  current_health: _int(0x1f0),
+  current_health: _int(0x338),
   // max_health: _int(0x5a0),
-  max_health: _int(0x1f8),
+  max_health: _int(0x3d0),
   // current_mana: _int(0x4d0),
   current_mana: _int(0x204),
   // max_mana: _int(0x4d0),
@@ -139,10 +139,10 @@ const _oSpawnInfo = {
 
   type: _byt(0x125),
   ownerId: _int(0x55c),
-  hide: _int(0x504),
-  level: _byt(0x515),
-  class: _byt(0xf9c),
-  _iRace: _int(0xf94),
+  hide: _int(0x60c),
+  level: _byt(0x544),
+  class: _byt(0xfac),
+  _iRace: _int(0xfa4),
 };
 
 
@@ -168,9 +168,9 @@ const _oCharData = {
   disp_name: _str(0xe4),
 
   // current_health: _int(0x198),
-  current_health: _int(0x1f0),
+  current_health: _int(0x338),
   // max_health: _int(0x5a0),
-  max_health: _int(0x1f8),
+  max_health: _int(0x3d0),
   // current_mana: _int(0x1f0),
   current_mana: _int(0x204),
   // max_mana: _int(0x4d0),
@@ -178,10 +178,10 @@ const _oCharData = {
 
   type: _byt(0x125),
   ownerId: _int(0x55c),
-  hide: _int(0x504),
-  level: _byt(0x515),
-  class: _byt(0xf9c),
-  _iRace: _int(0xf94),
+  hide: _int(0x60c),
+  level: _byt(0x544),
+  class: _byt(0xfac),
+  _iRace: _int(0xfa4),
   lang_skills: _arr(0x2890, 0x18), // TODO: split this out or make some lookup table
 
   // TODO:  Invalid offsets
